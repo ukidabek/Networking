@@ -16,8 +16,10 @@ using BaseGameLogic.SceneManagement;
 
 namespace BaseGameLogic.Networking
 {
-    public abstract class BaseNetworkManager : Singleton<BaseNetworkManager>
+    public abstract class BaseNetworkManager : MonoBehaviour
     {
+        public static BaseNetworkManager Instance { get; protected set;}
+
         [SerializeField, Header("Network settings.")]
         protected NetworkManagerSettings _settings = new NetworkManagerSettings();
 
@@ -128,9 +130,12 @@ namespace BaseGameLogic.Networking
             channelDictionary.Add(type, channelId);
         }
 
-        protected override void Awake()
+        protected virtual void Awake()
         {
-            base.Awake();
+            if(Instance == null)
+                Instance = this;
+            else
+                Destroy(this.gameObject);
 
             matchSettings.NetworkMatch = gameObject.AddComponent<NetworkMatch>();
 
@@ -153,6 +158,8 @@ namespace BaseGameLogic.Networking
                     _messageSendersList[i]);
             }
         }
+
+        protected virtual void Start() {}
 
         protected virtual void OnDestroy() {}
 

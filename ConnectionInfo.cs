@@ -35,7 +35,7 @@ namespace BaseGameLogic.Networking
         public ConnectionInfo(int connectionID, string ipAdress, int port)
         {
             _connectionID = connectionID;
-            _ipAdres = NetworkUtility.GetIPAdress(ipAdress);
+            _ipAdres = NetworkUtility.GetIPAdres(ipAdress);
             _port = port;
         } 
     }

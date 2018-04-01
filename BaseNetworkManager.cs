@@ -133,7 +133,10 @@ namespace BaseGameLogic.Networking
         protected virtual void Awake()
         {
             if(Instance == null)
+            {
                 Instance = this;
+                DontDestroyOnLoad(this.gameObject);
+            }
             else
                 Destroy(this.gameObject);
 
@@ -212,7 +215,7 @@ namespace BaseGameLogic.Networking
 
             string log = string.Format(
                 NetworkManagerLogs.NEW_CONNECTION_APPEARED,
-                NetworkUtility.GetIPAdress(address),
+                NetworkUtility.GetIPAdres(address),
                 port,
                 System.DateTime.Now.ToString());
 

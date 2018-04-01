@@ -10,7 +10,7 @@ namespace BaseGameLogic.Networking
     {
         private static readonly char[] IP_ADRES_SEPARATORS = { ':' };
 
-        public static string GetIPAdress(string ipAdressString)
+        public static string GetIPAdres(string ipAdressString)
         {
             string[] ipAdresParts = ipAdressString.Split(IP_ADRES_SEPARATORS);
             int ipAdresIndex = ipAdresParts.Length - 1;

@@ -1,5 +1,5 @@
 ﻿
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     public class NetworkManagerLogs
     {

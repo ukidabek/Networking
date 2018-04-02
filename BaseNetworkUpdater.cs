@@ -3,7 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     public abstract class BaseNetworkUpdater : BaseMessageSender
     {

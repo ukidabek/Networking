@@ -11,10 +11,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Linq;
 
-using BaseGameLogic.Singleton;
-using BaseGameLogic.SceneManagement;
-
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     public abstract class BaseNetworkManager : MonoBehaviour
     {

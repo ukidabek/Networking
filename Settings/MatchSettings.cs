@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking.Match;
 
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     [Serializable]
     public class MatchSettings

@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     [CustomEditor(typeof(BaseNetworkManager), true)]
     public class NetworkManagerCustomInspector : Editor

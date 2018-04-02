@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 
 
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     public static class NetworkUtility
     {

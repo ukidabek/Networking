@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     public abstract class BaseMessageHandler : MonoBehaviour
     { 

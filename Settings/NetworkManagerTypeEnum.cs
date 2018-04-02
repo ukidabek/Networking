@@ -1,4 +1,4 @@
-﻿namespace BaseGameLogic.Networking
+﻿namespace Networking
 {
     public enum NetworkManagerTypeEnum
     {

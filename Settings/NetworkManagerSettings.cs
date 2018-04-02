@@ -4,9 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using BaseGameLogic.Networking;
-
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     [Serializable]
     public class NetworkManagerSettings : BaseNetworkManagerSettings
@@ -18,6 +16,5 @@ namespace BaseGameLogic.Networking
             get { return _pearType; }
             set { _pearType = value; }
         }
-
     }
 }

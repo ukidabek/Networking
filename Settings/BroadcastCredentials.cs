@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BaseGameLogic.Networking
+namespace Networking
 {
     [Serializable]
     public class BroadcastCredentials

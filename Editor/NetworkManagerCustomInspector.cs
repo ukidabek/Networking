@@ -19,12 +19,17 @@ namespace Networking
         private GenericMenu messageSenderContextMenu = new GenericMenu();
         private GenericMenu messageHandlerContextMenu = new GenericMenu();
 
+        public static Type[] GetDerivedTypes(Type baseType)
+        {
+            return baseType.Assembly.GetTypes().Where(type => (type.IsSubclassOf(baseType) && !type.IsAbstract)).ToArray();
+        }
+
         private void OnEnable()
         {
             manager = target as BaseNetworkManager;
 
-            messageSenderTypes = AssemblyExtension.GetDerivedTypes<BaseMessageSender>();
-            messageHandlerTypes = AssemblyExtension.GetDerivedTypes<BaseMessageHandler>();
+            messageSenderTypes = GetDerivedTypes(typeof(BaseMessageSender));
+            messageHandlerTypes = GetDerivedTypes(typeof(BaseMessageSender));
 
             GUIContent content = null;
             for (int i = 0; i < messageSenderTypes.Length; i++)

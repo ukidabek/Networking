@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace Networking
 {
-    public abstract class BaseNetworkManager : MonoBehaviour
+    public class BaseNetworkManager : MonoBehaviour
     {
         public static BaseNetworkManager Instance { get; protected set;}
 
@@ -24,11 +24,9 @@ namespace Networking
 
         public NetworkManagerSettings Settings { get { return _settings; } }
 
-        [SerializeField]
-        protected BroadcastCredentials _broadcastCredentials = new BroadcastCredentials();
+        [SerializeField] protected BroadcastCredentials _broadcastCredentials = new BroadcastCredentials();
 
-        [SerializeField]
-        protected MatchSettings matchSettings = new MatchSettings();
+        [SerializeField] protected MatchSettings matchSettings = new MatchSettings();
 
         // Match making.
 
@@ -38,11 +36,9 @@ namespace Networking
         [SerializeField, Header("Run time values."), Tooltip("List of connected peers. Do not setup!")]
         protected List<ConnectionInfo> connectedPeers = new List<ConnectionInfo>();
 
-        [SerializeField]
-        protected int hostID = 0;
+        [SerializeField] protected int hostID = 0;
 
-        [SerializeField]
-        protected List<string> _logs = new List<string>();
+        [SerializeField] protected List<string> _logs = new List<string>();
 
         protected int port = 0;
         protected byte error = 0;
@@ -57,21 +53,16 @@ namespace Networking
 
         protected Dictionary<QosType, int> channelDictionary = new Dictionary<QosType, int>();
 
-        [SerializeField, Space]
-        private GameObject _messageHandlersHolder = null;
-        [SerializeField]
-        private GameObject _messageSendersHolder = null;
+        [SerializeField, Space] private GameObject _messageHandlersHolder = null;
+        [SerializeField] private GameObject _messageSendersHolder = null;
 
-        [SerializeField, Space]
-        protected List<BaseMessageHandler> _messageHandlersList = new List<BaseMessageHandler>();
+        [SerializeField, Space] protected List<BaseMessageHandler> _messageHandlersList = new List<BaseMessageHandler>();
         protected Dictionary<int, BaseMessageHandler> _messageHandlersDictionary = new Dictionary<int, BaseMessageHandler>();
 
-        [SerializeField]
-        protected List<BaseMessageSender> _messageSendersList = new List<BaseMessageSender>();
+        [SerializeField] protected List<BaseMessageSender> _messageSendersList = new List<BaseMessageSender>();
         protected Dictionary<int, BaseMessageSender> _messageSendersDictionary = new Dictionary<int, BaseMessageSender>();
 
-        [SerializeField]
-        protected List<BaseNetworkUpdater> _networkUpdaterList = new List<BaseNetworkUpdater>();
+        [SerializeField] protected List<BaseNetworkUpdater> _networkUpdaterList = new List<BaseNetworkUpdater>();
 
         public ConnectionEvent ClientConnectedCallback = new ConnectionEvent();
         public ConnectionEvent ClientDisconnectedCallback = new ConnectionEvent();

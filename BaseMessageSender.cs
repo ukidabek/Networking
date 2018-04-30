@@ -15,10 +15,7 @@ namespace Networking
 
     public abstract class BaseMessageSender : MonoBehaviour
     {
-        protected BaseNetworkManager NetworkManagerInstance
-        {
-            get { return BaseNetworkManager.Instance; }
-        }
+        protected BaseNetworkManager NetworkManagerInstance { get { return BaseNetworkManager.Instance; } }
 
         [SerializeField]
         private SendType SendType = SendType.SendReliable;

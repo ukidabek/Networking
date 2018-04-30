@@ -64,6 +64,11 @@ namespace Networking
 
         [SerializeField] protected List<BaseNetworkUpdater> _networkUpdaterList = new List<BaseNetworkUpdater>();
 
+        [Space]
+        public UnityEvent OnSesionStartCallback = new UnityEvent();
+        public UnityEvent OnSesionJoinCallback = new UnityEvent();
+
+        [Space]
         public ConnectionEvent ClientConnectedCallback = new ConnectionEvent();
         public ConnectionEvent ClientDisconnectedCallback = new ConnectionEvent();
         public UnityEvent LoadGameCallback = new UnityEvent();
@@ -92,6 +97,7 @@ namespace Networking
         public virtual void StartSession()
         {
             CreateMatch();
+            OnSesionStartCallback.Invoke();
         }
 
         public virtual void StartGame()
@@ -110,6 +116,7 @@ namespace Networking
                     matchSettings.NetworkMatch.JoinMatch(matches[0].networkId, "", "", "", 0, 0, OnMatchJoined);
                 }
             });
+            OnSesionJoinCallback.Invoke();
         }
 
         protected void AddChanel(ref ConnectionConfig connectionConfig, QosType type)

@@ -17,7 +17,7 @@ namespace Networking
 
         private void Awake()
         {
-            _updateRateInterval = 1 / _updateRate;
+            _updateRateInterval = 1f / _updateRate;
         }
 
         protected virtual void Start()
@@ -46,12 +46,10 @@ namespace Networking
             if (_updateCounter <= 0)
             {
                 SendMessage();
-                _updateCounter = _updateRate;
+                _updateCounter = _updateRateInterval;
             }
             else
-            {
                 _updateCounter -= Time.deltaTime;
-            }
         }
     }
 }

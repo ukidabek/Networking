@@ -143,18 +143,10 @@ namespace Networking
             connectedPeers.Clear();
 
             for (int i = 0; i < _messageHandlersList.Count; i++)
-            {
-                _messageHandlersDictionary.Add(
-                    _messageHandlersList[i].MessageID,
-                    _messageHandlersList[i]);
-            }
+                _messageHandlersDictionary.Add(_messageHandlersList[i].MessageID, _messageHandlersList[i]);
 
             for (int i = 0; i < _messageSendersList.Count; i++)
-            {
-                _messageSendersDictionary.Add(
-                    _messageSendersList[i].MessageID,
-                    _messageSendersList[i]);
-            }
+                _messageSendersDictionary.Add(_messageSendersList[i].MessageID,_messageSendersList[i]);
         }
 
         protected virtual void Start() {}

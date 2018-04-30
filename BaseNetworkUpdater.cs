@@ -7,13 +7,11 @@ namespace Networking
 {
     public abstract class BaseNetworkUpdater : BaseMessageSender
     {
-        [SerializeField]
-        private int _updateRate = 60;
+        [SerializeField] protected int _updateRate = 60;
 
-        private float _updateRateInterval = 0.1f;
+        protected float _updateRateInterval = 0.1f;
 
-        [SerializeField]
-        private float _updateCounter = 0;
+        [SerializeField] protected float _updateCounter = 0;
 
         private void Awake()
         {

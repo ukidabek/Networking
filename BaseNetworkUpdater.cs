@@ -7,7 +7,7 @@ namespace Networking
 {
     public abstract class BaseNetworkUpdater : BaseMessageSender
     {
-        [SerializeField] protected bool _updateAutomatically = true;
+        [SerializeField] protected virtual bool UpdateAutomatically { get { return true; } }
 
         [SerializeField] protected int _updateRate = 60;
 
@@ -18,7 +18,7 @@ namespace Networking
         private void Awake()
         {
             _updateRateInterval = 1f / _updateRate;
-            enabled = _updateAutomatically;
+            enabled = UpdateAutomatically;
         }
 
         protected virtual void Start()
@@ -44,9 +44,9 @@ namespace Networking
 
         protected virtual void Update()
         {
-            if(!_updateAutomatically)
+            if(!UpdateAutomatically)
             {
-                enabled = _updateAutomatically;
+                enabled = UpdateAutomatically;
                 return;
             }
 

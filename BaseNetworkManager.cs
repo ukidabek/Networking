@@ -564,7 +564,7 @@ namespace Networking
         public void RemoveNetworkUpdater(BaseNetworkUpdater updater)
         {
             int index = _networkUpdaterList.IndexOf(updater);
-            _networkUpdaterList.RemoveAt(index);
+            if(index >= 0) _networkUpdaterList.RemoveAt(index);
         }
     }
 

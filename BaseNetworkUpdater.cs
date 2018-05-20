@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,37 +10,39 @@ namespace Networking
     {
         [SerializeField] protected virtual bool UpdateAutomatically { get { return true; } }
 
-        [SerializeField] protected int _updateRate = 60;
+        [Serializable] protected class UpdateRate
+        {
+            public int Rate = 60;
+            public float UpdateRateInterval = 0.1f;
 
-        protected float _updateRateInterval = 0.1f;
+            public void CalculateInterval()
+            {
+                UpdateRateInterval = 1f / Rate;
+            }
+        }
+
+        [SerializeField] protected UpdateRate updateRate = new UpdateRate();
 
         [SerializeField] protected float _updateCounter = 0;
 
         private void Awake()
         {
-            _updateRateInterval = 1f / _updateRate;
+            updateRate.CalculateInterval();
             enabled = UpdateAutomatically;
         }
 
         protected virtual void Start()
         {
             if(NetworkManagerInstance == null)
-            {
                 enabled = false;
-            }
             else
-            {
                 NetworkManagerInstance.AddNetworkUpdater(this);
-            }
-
         }
 
         protected virtual void OnDestroy()
         {
             if (NetworkManagerInstance != null)
-            {
                 NetworkManagerInstance.RemoveNetworkUpdater(this);
-            }
         }
 
         protected virtual void Update()
@@ -53,7 +56,7 @@ namespace Networking
             if (_updateCounter <= 0)
             {
                 SendMessage();
-                _updateCounter = _updateRateInterval;
+                _updateCounter = updateRate.UpdateRateInterval;
             }
             else
                 _updateCounter -= Time.deltaTime;

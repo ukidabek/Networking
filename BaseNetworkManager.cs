@@ -282,8 +282,7 @@ namespace Networking
 
         public virtual void Broadcast(bool reliable = true, bool update = false)
         {
-            if (Settings.ManagerType == NetworkManagerTypeEnum.Client)
-                return;
+            if (Settings.ManagerType == NetworkManagerTypeEnum.Client) return;
 
             if (update)
             {

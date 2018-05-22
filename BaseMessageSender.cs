@@ -5,29 +5,54 @@ using System.Collections.Generic;
 
 namespace Networking
 {
-    internal enum SendType
-    {
-        SendReliable,
-        SendUnreiable,
-        UpdateReliable,
-        UpdateUnreiable
-    }
-
+    /// <summary>
+    /// Base abstract class used to create and send message.
+    /// </summary>
     public abstract class BaseMessageSender : MonoBehaviour
     {
+        /// <summary>
+        /// Network manager instance.
+        /// </summary>
         protected BaseNetworkManager NetworkManagerInstance { get { return BaseNetworkManager.Instance; } }
 
-        [SerializeField]
-        private SendType SendType = SendType.SendReliable;
+        /// <summary>
+        /// Defines how message will be handler. 
+        /// </summary>
+        [SerializeField] private SendType SendType = SendType.SendReliable;
 
+        /// <summary>
+        /// Id that will be used to identify a message.   
+        /// </summary>
         public abstract int MessageID { get; }
 
+        /// <summary>
+        /// Generate message bytes.
+        /// </summary>
+        /// <returns>Byte array of message</returns>
         protected abstract byte[] GetMessageBytes();
+
+        /// <summary>
+        /// Generate message bytes.
+        /// </summary>
+        /// <returns>Byte array of message</returns>
         protected abstract byte[] GetMessageBytes(int connectionID);
 
+        protected virtual byte[] CombineMessageWithId(int id, byte[] message)
+        {
+            List<byte> combinedMessage = new List<byte>();
+            combinedMessage.Add((byte)id);
+            combinedMessage.AddRange(message);
+
+            return combinedMessage.ToArray();
+        }
+
+        /// <summary>
+        /// Send message to all connections. 
+        /// </summary>
         public void SendMessage()
         {
-            byte[] message = GetMessageBytes();
+            byte[] message = CombineMessageWithId(MessageID, GetMessageBytes());
+
             switch (SendType)
             {
                 case SendType.SendReliable:
@@ -43,9 +68,14 @@ namespace Networking
             }
         }
 
+        /// <summary>
+        /// Send message to specified connection.
+        /// </summary>
+        /// <param name="connectionID">Destination connection ID</param>
         public void SendMessage(int connectionID)
         {
-            byte[] message = GetMessageBytes(connectionID);
+            byte[] message = CombineMessageWithId(MessageID, GetMessageBytes(connectionID));
+
             switch (SendType)
             {
                 case SendType.SendReliable:

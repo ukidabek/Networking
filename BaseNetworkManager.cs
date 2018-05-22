@@ -13,16 +13,29 @@ using System.Linq;
 
 namespace Networking
 {
+    /// <summary>
+    /// Network manager base class.
+    /// Its a singleton clad that have all base functionality.
+    /// </summary>
     public class BaseNetworkManager : MonoBehaviour
     {
+        /// <summary>
+        /// Reference to instance of manager.
+        /// </summary>
         public static BaseNetworkManager Instance { get; protected set;}
 
         [SerializeField, Header("Network settings.")]
         protected NetworkManagerSettings _settings = new NetworkManagerSettings();
+        /// <summary>
+        /// Network manager settings.
+        /// </summary>
+        public NetworkManagerSettings Settings { get { return _settings; } }
 
+        /// <summary>
+        /// Return true if menage work as a server.
+        /// </summary>
         public bool IsSever { get { return _settings.ManagerType == NetworkManagerTypeEnum.Server; } }
 
-        public NetworkManagerSettings Settings { get { return _settings; } }
 
         [SerializeField] protected BroadcastCredentials _broadcastCredentials = new BroadcastCredentials();
 
@@ -64,13 +77,27 @@ namespace Networking
 
         [SerializeField] protected List<BaseNetworkUpdater> _networkUpdaterList = new List<BaseNetworkUpdater>();
 
+        /// <summary>
+        /// Call back collied what session is started. Match is created.
+        /// </summary>
         [Space]
         public UnityEvent OnSesionStartCallback = new UnityEvent();
+        /// <summary>
+        /// Call back when manager joined to match. 
+        /// </summary>
         public UnityEvent OnSesionJoinCallback = new UnityEvent();
 
+        /// <summary>
+        /// Coled what new client is connected.
+        /// </summary>
         [Space]
         public ConnectionEvent ClientConnectedCallback = new ConnectionEvent();
+
+        /// <summary>
+        /// 
+        /// </summary>
         public ConnectionEvent ClientDisconnectedCallback = new ConnectionEvent();
+
         public UnityEvent LoadGameCallback = new UnityEvent();
 
         protected virtual void Initialize()
@@ -107,7 +134,7 @@ namespace Networking
 
         public virtual void JoinSession()
         {
-            _settings.ManagerType = NetworkManagerTypeEnum.Server;
+            _settings.ManagerType = NetworkManagerTypeEnum.Client;
 
             matchSettings.NetworkMatch.ListMatches(0, 1, "", true, 0, 0, (success, info, matches) =>
             {
@@ -242,6 +269,11 @@ namespace Networking
             ClientDisconnected(connectionID);
         }
 
+        /// <summary>
+        /// Handle all incoming messages using associated handler to message id.
+        /// </summary>
+        /// <param name="buffer">Buffer holding all message bytes.</param>
+        /// <param name="size">Size of message</param>
         protected virtual void HandleMessages(byte[] buffer, int size)
         {
             int messageId = receiveBuffer[0];
@@ -264,7 +296,12 @@ namespace Networking
             return NetworkUtility.GetNetworkError(error);
         }
 
-        protected virtual void SendMessage(int messageID, int connectionID = -1)
+        /// <summary>
+        /// Sends message using message sender with is assigned to provided id.
+        /// </summary>
+        /// <param name="messageID">Message ID</param>
+        /// <param name="connectionID"> Id of connection that message will be send.</param>
+        public virtual void SendMessage(int messageID, int connectionID = -1)
         {
             BaseMessageSender baseMessageSender = null;
             if(_messageSendersDictionary.TryGetValue(messageID, out baseMessageSender))
@@ -280,6 +317,11 @@ namespace Networking
             }
         }
 
+        /// <summary>
+        /// Broadcast last received message. 
+        /// </summary>
+        /// <param name="reliable">If true message is send reliable</param>
+        /// <param name="update">If true message will be updated.</param>
         public virtual void Broadcast(bool reliable = true, bool update = false)
         {
             if (Settings.ManagerType == NetworkManagerTypeEnum.Client) return;
@@ -308,6 +350,12 @@ namespace Networking
             }
         }
 
+        /// <summary>
+        /// Send message to all connected clients.
+        /// </summary>
+        /// <param name="message">Message bytes</param>
+        /// <param name="skipConnectionID">Connection id for witch send will be spiked.</param>
+        /// <param name="size">Size of message if set to 0 message byte array length is used.</param>
         public virtual void SendToAllReliable(byte[] message, int skipConnectionID = -1, int size = 0)
         {
             for (int i = 0; i < connectedPeers.Count; i++)
@@ -321,6 +369,13 @@ namespace Networking
             }
         }
 
+        /// <summary>
+        /// Send massage to selected connections.
+        /// </summary>
+        /// <param name="message">Message bytes</param>
+        /// <param name="connectionId">Target connection ID.</param>
+        /// <param name="size">Size of message if set to 0 message byte array length is used.</param>
+        /// <returns>Number of network error for debug</returns>
         public virtual NetworkError SendReliable(byte[] message, int connectionId, int size = 0)
         {
             NetworkTransport.Send(
@@ -336,6 +391,12 @@ namespace Networking
             return networkError;
         }
 
+        /// <summary>
+        /// Update message for all connected clients.
+        /// </summary>
+        /// <param name="message">Message bytes</param>
+        /// <param name="skipConnectionID">Connection id for witch update will be spiked.</param>
+        /// <param name="size">Size of message if set to 0 message byte array length is used.</param>
         public virtual void UpdateForAllUnreiable(byte[] message, int skipConnectionID = -1, int size = 0)
         {
             for (int i = 0; i < connectedPeers.Count; i++)
@@ -349,12 +410,16 @@ namespace Networking
             }
         }
 
+        /// <summary>
+        /// Use to update to specified connection.
+        /// </summary>
+        /// <param name="message">Message bytes to send.</param>
+        /// <param name="connectionId">Target connection ID.</param>
+        /// <param name="size">Size of message if set to 0 message byte array length is used.</param>
+        /// <returns></returns>
         public virtual NetworkError UpdateUnreiable(byte[] message, int connectionId, int size = 0)
         {
-            if(message == null || message.Length == 0)
-            {
-                return NetworkError.Ok;
-            }
+            if(message == null || message.Length == 0) return NetworkError.Ok;
 
             NetworkTransport.Send(
                 hostID,
@@ -431,6 +496,8 @@ namespace Networking
         {
             if (matchSettings.NetworkMatch != null)
             {
+                _settings.ManagerType = NetworkManagerTypeEnum.Client;
+
                 matchSettings.NetworkMatch.CreateMatch(
                     matchSettings.MatchName,
                     matchSettings.MatchSize,

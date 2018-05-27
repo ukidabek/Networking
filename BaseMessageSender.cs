@@ -51,6 +51,8 @@ namespace Networking
         /// </summary>
         public void SendMessage()
         {
+            if (NetworkManagerInstance == null) return;
+
             byte[] message = CombineMessageWithId(MessageID, GetMessageBytes());
 
             switch (SendType)

@@ -25,6 +25,8 @@ namespace Networking
         /// </summary>
         public abstract int MessageID { get; }
 
+        protected virtual void Awake() {}
+
         /// <summary>
         /// Generate message bytes.
         /// </summary>

@@ -10,7 +10,8 @@ namespace Networking
     {
         [SerializeField] protected virtual bool UpdateAutomatically { get { return true; } }
 
-        [Serializable] protected class UpdateRate
+        [Serializable]
+        protected class UpdateRate
         {
             public int Rate = 60;
             public float UpdateRateInterval = 0.1f;
@@ -25,7 +26,7 @@ namespace Networking
 
         [SerializeField] protected float _updateCounter = 0;
 
-        private void Awake()
+        protected override void Awake()
         {
             updateRate.CalculateInterval();
             enabled = UpdateAutomatically;

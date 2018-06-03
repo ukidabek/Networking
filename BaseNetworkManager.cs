@@ -36,14 +36,14 @@ namespace Networking
         /// </summary>
         public bool IsSever { get { return _settings.ManagerType == NetworkManagerTypeEnum.Server; } }
 
-
         [SerializeField] protected BroadcastCredentials _broadcastCredentials = new BroadcastCredentials();
 
         [SerializeField] protected MatchSettings matchSettings = new MatchSettings();
 
         // Match making.
 
-        protected List<MatchInfoSnapshot> matchList = new List<MatchInfoSnapshot>();
+        private List<MatchInfoSnapshot> matchList = new List<MatchInfoSnapshot>();
+        public List<MatchInfoSnapshot> MatchList { get { return matchList; } }
         protected MatchInfo matchInfo;
 
         [SerializeField, Header("Run time values."), Tooltip("List of connected peers. Do not setup!")]
@@ -136,14 +136,28 @@ namespace Networking
         {
             _settings.ManagerType = NetworkManagerTypeEnum.Client;
 
-            matchSettings.NetworkMatch.ListMatches(0, 1, "", true, 0, 0, (success, info, matches) =>
+            matchSettings.NetworkMatch.ListMatches(0, 1, "", true, 0, 0, MatchFind);
+            //    (success, info, matches) =>
+            //{
+            //    if (success && matches.Count > 0)
+            //    {
+            //        matchSettings.NetworkMatch.JoinMatch(matches[0].networkId, "", "", "", 0, 0, OnMatchJoined);
+            //    }
+            //});
+        }
+
+        public void JoinMatch(MatchInfoSnapshot matchInfo)
+        {
+            matchSettings.NetworkMatch.JoinMatch(matchInfo.networkId, "", "", "", 0, 0, OnMatchJoined);
+        }
+
+        private void MatchFind(bool success, string extendedInfo, List<MatchInfoSnapshot> responseData)
+        {
+            if(success)
             {
-                if (success && matches.Count > 0)
-                {
-                    matchSettings.NetworkMatch.JoinMatch(matches[0].networkId, "", "", "", 0, 0, OnMatchJoined);
-                }
-            });
-            OnSesionJoinCallback.Invoke();
+                matchList = responseData;
+                OnSesionJoinCallback.Invoke();
+            }
         }
 
         protected void AddChanel(ref ConnectionConfig connectionConfig, QosType type)

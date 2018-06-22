@@ -10,22 +10,19 @@ namespace Networking
     [Serializable]
     public class ConnectionInfo
     {
-        [SerializeField]
-        private int _port = 0;
+        [SerializeField] private int _port = 0;
         public int Port
         {
             get { return _port; }
         }
 
-        [SerializeField]
-        private string _ipAdres = string.Empty;
+        [SerializeField] private string _ipAdres = string.Empty;
         public string IPAdres
         {
             get { return _ipAdres; }
         }
 
-        [SerializeField]
-        private int _connectionID = -1;
+        [SerializeField] private int _connectionID = -1;
         public int ConnectionID
         {
             get { return _connectionID; }
